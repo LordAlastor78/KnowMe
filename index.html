@@ -289,6 +289,13 @@
             transition: all 0.3s
         }
 
+        .lang-btn {
+            min-width: 54px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
         .theme-btn:hover {
             background: var(--glow2);
             border-color: var(--accent);
@@ -921,8 +928,7 @@
             border-radius: 14px;
             overflow: hidden;
             transition: all 0.4s;
-            position: relative;
-            group: true
+            position: relative
         }
 
         .project-card:hover {
@@ -1360,6 +1366,7 @@
                 <a href="#experience">// Experience</a>
                 <a href="#projects">// Projects</a>
                 <a href="#contact">// Contact</a>
+                <button class="theme-btn lang-btn" id="langToggle" onclick="toggleLanguage()">ES</button>
                 <button class="theme-btn" onclick="toggleTheme()">🌓</button>
             </div>
         </div>
@@ -1773,6 +1780,406 @@
             particlesContainer.appendChild(p)
         }
 
+        const languageStorageKey = 'knowme-language';
+        const browserLanguage = navigator.language && navigator.language.toLowerCase().startsWith('es') ? 'es' : 'en';
+        let currentLanguage = localStorage.getItem(languageStorageKey) || browserLanguage;
+        const langToggle = document.getElementById('langToggle');
+
+        const translations = {
+            en: {
+                title: 'LordAlastor78 | Cybersecurity Portfolio',
+                nav: ['// About Me', '// Skills', '// Experience', '// Projects', '// Contact'],
+                hero: {
+                    badge: 'Studying...',
+                    sub: 'Cybersecurity learner & Ethical Hacker',
+                    tag: 'Android Security · Malware Analysis · Privacy',
+                    projects: '⟐ View Projects',
+                    contact: '⟐ Contact Me'
+                },
+                sections: {
+                    aboutLabel: '//01. About Me',
+                    aboutTitle: 'Who I Am',
+                    aboutDesc: 'Computer Engineering student focused on <b style="color:var(--accent)">offensive cybersecurity</b>, secure application development, and digital privacy. My mission is to make the internet a safer place through open-source software and security research.',
+                    skillsLabel: '//02. Skills',
+                    skillsTitle: 'Tech Stack',
+                    skillsDesc: 'Tools and technologies I use every day to research, build, and protect systems.',
+                    experienceLabel: '//03. Experience',
+                    experienceTitle: 'My Journey',
+                    experienceDesc: 'The path I have followed in cybersecurity and software development.',
+                    projectsLabel: '//04. Projects',
+                    projectsTitle: 'What I Have Built',
+                    projectsDesc: 'Open-source projects that show my passion for security, privacy, and development.',
+                    contactLabel: '//05. Contact',
+                    contactTitle: "Let's Talk",
+                    contactDesc: 'Do you have a project in mind, a collaboration opportunity, or simply want to talk about security? Feel free to reach out.'
+                },
+                aboutCards: [
+                    {
+                        title: 'Offensive Security',
+                        desc: 'Learning vulnerability analysis, pentesting, and security assessment for applications and systems.'
+                    },
+                    {
+                        title: 'Android Security',
+                        desc: 'Android application development with security-first design. Static and dynamic APK analysis, reverse engineering, and threat protection.'
+                    },
+                    {
+                        title: 'Privacy & Crypto',
+                        desc: 'Implementation of end-to-end encryption, secure P2P communications, and tools that prioritize user privacy above all.'
+                    },
+                    {
+                        title: 'Malware Analysis',
+                        desc: 'Malware research and removal on Android, Windows, and Linux. Infected system remediation and behavioral analysis.'
+                    },
+                    {
+                        title: 'Open Source',
+                        desc: 'Strong open-source advocate. I believe in sharing knowledge and tools so the whole community can benefit and improve collective security.'
+                    },
+                    {
+                        title: 'Networking',
+                        desc: 'Understanding of network protocols, traffic analysis, and intrusion detection.'
+                    }
+                ],
+                stats: ['Active Projects', 'Commits', 'Lines of Code', 'Hours Learning'],
+                skills: [
+                    'Android Development (Kotlin/Java)',
+                    'Python & Scripting',
+                    'Malware Analysis & Reverse Engineering',
+                    'Networking & Protocol Analysis',
+                    'Cryptography & Encryption',
+                    'Linux & Bash Scripting',
+                    'HTML/CSS/JavaScript'
+                ],
+                experience: [
+                    {
+                        date: '2025 — PRESENT',
+                        title: 'Cybersecurity Student & Researcher',
+                        subtitle: 'Training with a focus on cybersecurity',
+                        desc: 'Currently deepening my knowledge in malware analysis, binary reverse engineering, and applied cryptography. Researching new threat detection techniques and developing security tools. Building security applications for threat detection and vulnerability analysis.'
+                    },
+                    {
+                        date: '2024 — 2025',
+                        title: 'Learning Programming Languages',
+                        subtitle: 'Python, GDScript',
+                        desc: 'Learning Python and GDScript to build applications and games, with a focus on getting started in the programming world.'
+                    },
+                    {
+                        date: '2023 — 2024',
+                        title: 'Introduction to Computer Science',
+                        subtitle: 'First steps in the programming world',
+                        desc: 'Started learning with Windows, some Linux, and networking.'
+                    }
+                ],
+                projects: [
+                    {
+                        status: 'IN DEVELOPMENT',
+                        desc: 'Advanced offline and online malware scanner for Android devices. It analyzes installed applications using behavioral signatures and advanced heuristics to detect threats without requiring an internet connection. Diverse detection engine (ClamAV, YARA...).',
+                        links: ['⟐ GitHub (Coming Soon)', '⟐ Details (Coming Soon)']
+                    },
+                    {
+                        status: 'ACTIVE',
+                        desc: 'Point-to-point encrypted chat (P2P) without central servers. Communications travel directly between users\' devices with end-to-end encryption. No logs, no stored metadata, no middlemen. Your conversation belongs only to you.',
+                        links: ['⟐ GitHub']
+                    },
+                    {
+                        status: 'IN DEVELOPMENT',
+                        desc: 'Encrypted chat application, alternative to WindChat, focused on simplicity and performance. It uses an encryption protocol and sends messages through the channels of any messaging app by interpreting the message format (text, image (still in testing), file) and sending it encrypted through the messaging app chosen by the user (WhatsApp, Telegram, Signal...). When it receives an encrypted message, it decrypts and interprets it to show the original content.',
+                        links: ['⟐ GitHub (In Development)']
+                    }
+                ],
+                contact: [
+                    { title: 'Email', desc: 'alastorbusiness78@proton.me' },
+                    { title: 'GitHub', desc: 'Check out my open-source projects' }
+                ],
+                footer: {
+                    quote: 'Privacy is a right, not a feature.',
+                    copy: '© 2026 ALASTOR — All rights reserved'
+                },
+                typing: [
+                    { cmd: 'nmap -sV -A --script=vuln target.com', output: 'Scanning 1000 ports... 23 open services found.' },
+                    { cmd: 'apktool d suspicious_app.apk', output: 'Decompiling APK... Analyzing AndroidManifest.xml...' },
+                    { cmd: 'gdb ./binary_target', output: 'GNU gdb loaded. Breakpoint set at main(). Program stopped.' },
+                    { cmd: 'python3 haztya_scan.py --deep /system', output: 'Deep scan initiated... Heuristic engine loaded. 0 threats found.' }
+                ]
+            },
+            es: {
+                title: 'LordAlastor78 | Portafolio de Ciberseguridad',
+                nav: ['// Sobre mí', '// Habilidades', '// Experiencia', '// Proyectos', '// Contacto'],
+                hero: {
+                    badge: 'Estudiando...',
+                    sub: 'Aprendiz de ciberseguridad y ethical hacker',
+                    tag: 'Seguridad Android · Análisis de malware · Privacidad',
+                    projects: '⟐ Ver proyectos',
+                    contact: '⟐ Contactarme'
+                },
+                sections: {
+                    aboutLabel: '//01. Sobre mí',
+                    aboutTitle: 'Quién soy',
+                    aboutDesc: 'Estudiante de Ingeniería Informática enfocado en la <b style="color:var(--accent)">ciberseguridad ofensiva</b>, el desarrollo de aplicaciones seguras y la privacidad digital. Mi objetivo es hacer Internet un lugar más seguro mediante software open-source e investigación de seguridad.',
+                    skillsLabel: '//02. Habilidades',
+                    skillsTitle: 'Stack Tecnológico',
+                    skillsDesc: 'Herramientas y tecnologías que uso a diario para investigar, construir y proteger sistemas.',
+                    experienceLabel: '//03. Experiencia',
+                    experienceTitle: 'Mi recorrido',
+                    experienceDesc: 'El camino que he seguido en ciberseguridad y desarrollo de software.',
+                    projectsLabel: '//04. Proyectos',
+                    projectsTitle: 'Lo que he construido',
+                    projectsDesc: 'Proyectos open-source que muestran mi pasión por la seguridad, la privacidad y el desarrollo.',
+                    contactLabel: '//05. Contacto',
+                    contactTitle: 'Hablemos',
+                    contactDesc: '¿Tienes un proyecto en mente, una oportunidad de colaboración o simplemente quieres hablar de seguridad? No dudes en escribirme.'
+                },
+                aboutCards: [
+                    {
+                        title: 'Seguridad ofensiva',
+                        desc: 'Aprendiendo análisis de vulnerabilidades, pentesting y evaluación de seguridad para aplicaciones y sistemas.'
+                    },
+                    {
+                        title: 'Seguridad Android',
+                        desc: 'Desarrollo de aplicaciones Android con enfoque de seguridad. Análisis estático y dinámico de APKs, reverse engineering y protección frente a amenazas.'
+                    },
+                    {
+                        title: 'Privacidad y criptografía',
+                        desc: 'Implementación de cifrado end-to-end, comunicaciones P2P seguras y herramientas que priorizan la privacidad del usuario por encima de todo.'
+                    },
+                    {
+                        title: 'Análisis de malware',
+                        desc: 'Investigación y eliminación de malware en Android, Windows y Linux. Remediación de sistemas infectados y análisis de comportamiento.'
+                    },
+                    {
+                        title: 'Open source',
+                        desc: 'Defensor firme del software abierto. Creo en compartir conocimiento y herramientas para que toda la comunidad pueda beneficiarse y mejorar la seguridad colectiva.'
+                    },
+                    {
+                        title: 'Redes',
+                        desc: 'Comprensión de protocolos de red, análisis de tráfico y detección de intrusiones.'
+                    }
+                ],
+                stats: ['Proyectos activos', 'Commits', 'Líneas de código', 'Horas aprendiendo'],
+                skills: [
+                    'Desarrollo Android (Kotlin/Java)',
+                    'Python y scripting',
+                    'Análisis de malware y reverse engineering',
+                    'Redes y análisis de protocolos',
+                    'Criptografía y cifrado',
+                    'Linux y scripting en Bash',
+                    'HTML/CSS/JavaScript'
+                ],
+                experience: [
+                    {
+                        date: '2025 — ACTUALIDAD',
+                        title: 'Estudiante e Investigador en Ciberseguridad',
+                        subtitle: 'Formación con foco en ciberseguridad',
+                        desc: 'Actualmente profundizo en análisis de malware, reverse engineering binario y criptografía aplicada. Investigo nuevas técnicas de detección de amenazas y desarrollo herramientas de seguridad. Estoy construyendo aplicaciones de seguridad para detección de amenazas y análisis de vulnerabilidades.'
+                    },
+                    {
+                        date: '2024 — 2025',
+                        title: 'Aprendizaje de lenguajes de programación',
+                        subtitle: 'Python, GDScript',
+                        desc: 'Aprendiendo Python y GDScript para crear aplicaciones y juegos, con foco en iniciarme en el mundo de la programación.'
+                    },
+                    {
+                        date: '2023 — 2024',
+                        title: 'Introducción a la informática',
+                        subtitle: 'Primeros pasos en el mundo de la programación',
+                        desc: 'Comencé aprendiendo con Windows, algo de Linux y redes.'
+                    }
+                ],
+                projects: [
+                    {
+                        status: 'EN DESARROLLO',
+                        desc: 'Escáner avanzado de malware offline y online para dispositivos Android. Analiza aplicaciones instaladas mediante firmas de comportamiento y heurísticas avanzadas para detectar amenazas sin necesidad de conexión a Internet. Motor de detección diverso (ClamAV, YARA...).',
+                        links: ['⟐ GitHub (Próximamente)', '⟐ Detalles (Próximamente)']
+                    },
+                    {
+                        status: 'ACTIVO',
+                        desc: 'Chat cifrado punto a punto (P2P) sin servidores centrales. Las comunicaciones viajan directamente entre los dispositivos de los usuarios con cifrado de extremo a extremo. Sin registros, sin metadatos almacenados, sin intermediarios. La conversación te pertenece solo a ti.',
+                        links: ['⟐ GitHub']
+                    },
+                    {
+                        status: 'EN DESARROLLO',
+                        desc: 'Aplicación de chat cifrado, alternativa a WindChat, enfocada en la simplicidad y el rendimiento. Usa un protocolo de cifrado y envía mensajes a través de los canales de cualquier app de mensajería interpretando el formato del mensaje (texto, imagen - aún en pruebas -, archivo) y enviándolo cifrado por la app elegida por el usuario (WhatsApp, Telegram, Signal...). Cuando recibe un mensaje cifrado, lo descifra e interpreta para mostrar el contenido original.',
+                        links: ['⟐ GitHub (En desarrollo)']
+                    }
+                ],
+                contact: [
+                    { title: 'Correo', desc: 'alastorbusiness78@proton.me' },
+                    { title: 'GitHub', desc: 'Mira mis proyectos open-source' }
+                ],
+                footer: {
+                    quote: 'La privacidad es un derecho, no una característica.',
+                    copy: '© 2026 ALASTOR — Todos los derechos reservados'
+                },
+                typing: [
+                    { cmd: 'nmap -sV -A --script=vuln objetivo.com', output: 'Analizando 1000 puertos... 23 servicios abiertos encontrados.' },
+                    { cmd: 'apktool d aplicacion_sospechosa.apk', output: 'Descompilando APK... Analizando AndroidManifest.xml...' },
+                    { cmd: 'gdb ./objetivo_binario', output: 'GNU gdb cargado. Breakpoint configurado en main(). Programa detenido.' },
+                    { cmd: 'python3 haztya_scan.py --deep /system', output: 'Análisis profundo iniciado... Motor heurístico cargado. 0 amenazas encontradas.' }
+                ]
+            }
+        };
+
+        const uiNodes = {
+            title: document.querySelector('title'),
+            navLinks: document.querySelectorAll('.nav-links a'),
+            heroBadge: document.querySelector('.hero-badge'),
+            heroSub: document.querySelector('.hero-sub'),
+            heroTag: document.querySelector('.hero-tag'),
+            heroButtons: document.querySelectorAll('.hero-cta .btn'),
+            sectionLabels: document.querySelectorAll('.section-label'),
+            sectionTitles: document.querySelectorAll('.section-title'),
+            sectionDescs: document.querySelectorAll('.section-desc'),
+            aboutCards: document.querySelectorAll('#about .about-card'),
+            statLabels: document.querySelectorAll('#about .stat-label'),
+            skillNames: document.querySelectorAll('#skills .skill-name'),
+            timelineItems: document.querySelectorAll('#experience .timeline-item'),
+            projectCards: document.querySelectorAll('#projects .project-card'),
+            contactCards: document.querySelectorAll('#contact .contact-card'),
+            footerQuote: document.querySelector('.quote'),
+            footerCopy: document.querySelector('.copy')
+        };
+
+        const typedEl = document.getElementById('typed');
+        const typedOutput = document.getElementById('typedOutput');
+        let typingTimer = null;
+        let cmdIndex = 0;
+        let charIndex = 0;
+        let isTyping = true;
+        let isDeleting = false;
+
+        function updateLanguageButton() {
+            langToggle.textContent = currentLanguage === 'es' ? 'EN' : 'ES';
+            langToggle.setAttribute('aria-label', currentLanguage === 'es' ? 'Cambiar a inglés' : 'Switch to Spanish');
+            langToggle.title = currentLanguage === 'es' ? 'Cambiar a inglés' : 'Switch to Spanish';
+        }
+
+        function restartTypingEffect() {
+            clearTimeout(typingTimer);
+            cmdIndex = 0;
+            charIndex = 0;
+            isTyping = true;
+            isDeleting = false;
+            typedEl.textContent = '';
+            typedOutput.textContent = '';
+            typingTimer = setTimeout(typeEffect, 600);
+        }
+
+        function typeEffect() {
+            const current = translations[currentLanguage].typing[cmdIndex];
+            if (isTyping) {
+                typedEl.textContent = current.cmd.substring(0, charIndex + 1);
+                charIndex++;
+                if (charIndex >= current.cmd.length) {
+                    isTyping = false;
+                    typingTimer = setTimeout(() => {
+                        typedOutput.textContent = '> ' + current.output;
+                        typingTimer = setTimeout(() => {
+                            isDeleting = true;
+                            typeEffect();
+                        }, 3000);
+                    }, 500);
+                    return;
+                }
+                typingTimer = setTimeout(typeEffect, 50 + Math.random() * 50);
+            } else if (isDeleting) {
+                typedOutput.textContent = '';
+                typedEl.textContent = current.cmd.substring(0, charIndex - 1);
+                charIndex--;
+                if (charIndex <= 0) {
+                    isDeleting = false;
+                    isTyping = true;
+                    cmdIndex = (cmdIndex + 1) % translations[currentLanguage].typing.length;
+                    charIndex = 0;
+                    typingTimer = setTimeout(typeEffect, 500);
+                } else {
+                    typingTimer = setTimeout(typeEffect, 30);
+                }
+            }
+        }
+
+        function applyLanguage(lang) {
+            const t = translations[lang];
+            document.documentElement.lang = lang;
+            uiNodes.title.textContent = t.title;
+            uiNodes.navLinks.forEach((link, index) => {
+                link.textContent = t.nav[index];
+            });
+            uiNodes.heroBadge.innerHTML = `<span class="dot"></span>${t.hero.badge}`;
+            uiNodes.heroSub.textContent = t.hero.sub;
+            uiNodes.heroTag.innerHTML = `<span class="bracket">[</span> ${t.hero.tag} <span class="bracket">]</span>`;
+            uiNodes.heroButtons[0].textContent = t.hero.projects;
+            uiNodes.heroButtons[1].textContent = t.hero.contact;
+
+            uiNodes.sectionLabels[0].textContent = t.sections.aboutLabel;
+            uiNodes.sectionTitles[0].textContent = t.sections.aboutTitle;
+            uiNodes.sectionDescs[0].innerHTML = t.sections.aboutDesc;
+            uiNodes.sectionLabels[1].textContent = t.sections.skillsLabel;
+            uiNodes.sectionTitles[1].textContent = t.sections.skillsTitle;
+            uiNodes.sectionDescs[1].textContent = t.sections.skillsDesc;
+            uiNodes.sectionLabels[2].textContent = t.sections.experienceLabel;
+            uiNodes.sectionTitles[2].textContent = t.sections.experienceTitle;
+            uiNodes.sectionDescs[2].textContent = t.sections.experienceDesc;
+            uiNodes.sectionLabels[3].textContent = t.sections.projectsLabel;
+            uiNodes.sectionTitles[3].textContent = t.sections.projectsTitle;
+            uiNodes.sectionDescs[3].textContent = t.sections.projectsDesc;
+            uiNodes.sectionLabels[4].textContent = t.sections.contactLabel;
+            uiNodes.sectionTitles[4].textContent = t.sections.contactTitle;
+            uiNodes.sectionDescs[4].textContent = t.sections.contactDesc;
+
+            uiNodes.aboutCards.forEach((card, index) => {
+                card.querySelector('h3').textContent = t.aboutCards[index].title;
+                card.querySelector('p').textContent = t.aboutCards[index].desc;
+            });
+
+            uiNodes.statLabels.forEach((label, index) => {
+                label.textContent = t.stats[index];
+            });
+
+            uiNodes.skillNames.forEach((name, index) => {
+                name.textContent = t.skills[index];
+            });
+
+            uiNodes.timelineItems.forEach((item, index) => {
+                const data = t.experience[index];
+                item.querySelector('.timeline-date').textContent = data.date;
+                item.querySelector('h3').textContent = data.title;
+                item.querySelector('h4').textContent = data.subtitle;
+                item.querySelector('p').textContent = data.desc;
+            });
+
+            uiNodes.projectCards.forEach((card, index) => {
+                const data = t.projects[index];
+                const status = card.querySelector('.project-status');
+                status.innerHTML = `<span class="live-dot"></span> ${data.status}`;
+                const desc = card.querySelector('.project-body p');
+                desc.textContent = data.desc;
+                const links = card.querySelectorAll('.project-links a');
+                links.forEach((link, linkIndex) => {
+                    if (data.links[linkIndex]) {
+                        link.textContent = data.links[linkIndex];
+                    }
+                });
+            });
+
+            uiNodes.contactCards[0].querySelector('h3').textContent = t.contact[0].title;
+            uiNodes.contactCards[0].querySelector('p').textContent = t.contact[0].desc;
+            uiNodes.contactCards[1].querySelector('h3').textContent = t.contact[1].title;
+            uiNodes.contactCards[1].querySelector('p').textContent = t.contact[1].desc;
+
+            uiNodes.footerQuote.textContent = t.footer.quote;
+            uiNodes.footerCopy.textContent = t.footer.copy;
+
+            updateLanguageButton();
+            restartTypingEffect();
+        }
+
+        function toggleLanguage() {
+            currentLanguage = currentLanguage === 'es' ? 'en' : 'es';
+            localStorage.setItem(languageStorageKey, currentLanguage);
+            applyLanguage(currentLanguage);
+        }
+
+        applyLanguage(currentLanguage);
+
         // Custom cursor
         const cursor = document.getElementById('cursor');
         const cursorDot = document.getElementById('cursorDot');
@@ -1800,42 +2207,6 @@
             document.getElementById('hamburger').classList.remove('active');
             document.getElementById('navLinks').classList.remove('open')
         }));
-
-        // Typing effect
-        const commands = [
-            { cmd: 'nmap -sV -A --script=vuln target.com', output: 'Scanning 1000 ports... 23 open services found.' },
-            { cmd: 'apktool d suspicious_app.apk', output: 'Decompiling APK... Analyzing AndroidManifest.xml...' },
-            { cmd: 'gdb ./binary_target', output: 'GNU gdb loaded. Breakpoint set at main(). Program stopped.' },
-            { cmd: 'python3 haztya_scan.py --deep /system', output: 'Deep scan initiated... Heuristic engine loaded. 0 threats found.' }
-        ];
-        let cmdIndex = 0, charIndex = 0, isTyping = true, isDeleting = false;
-        const typedEl = document.getElementById('typed');
-        const typedOutput = document.getElementById('typedOutput');
-        function typeEffect() {
-            const current = commands[cmdIndex];
-            if (isTyping) {
-                typedEl.textContent = current.cmd.substring(0, charIndex + 1);
-                charIndex++;
-                if (charIndex >= current.cmd.length) {
-                    isTyping = false;
-                    setTimeout(() => {
-                        typedOutput.textContent = '> ' + current.output;
-                        setTimeout(() => { isDeleting = true; typeEffect() }, 3000)
-                    }, 500);
-                    return
-                }
-                setTimeout(typeEffect, 50 + Math.random() * 50)
-            } else if (isDeleting) {
-                typedOutput.textContent = '';
-                typedEl.textContent = current.cmd.substring(0, charIndex - 1);
-                charIndex--;
-                if (charIndex <= 0) {
-                    isDeleting = false; isTyping = true; cmdIndex = (cmdIndex + 1) % commands.length; charIndex = 0;
-                    setTimeout(typeEffect, 500)
-                } else { setTimeout(typeEffect, 30) }
-            }
-        }
-        setTimeout(typeEffect, 1500);
 
         // Reveal on scroll
         const reveals = document.querySelectorAll('.reveal');
